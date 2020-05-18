@@ -37,6 +37,8 @@ class TelegramNotificationsOptionsForm(notify.NotificationConfigurationForm):
     )
 
 
+
+
 class TelegramNotificationsPlugin(notify.NotificationPlugin):
     title = 'Telegram Notifications'
     slug = 'sentry_telegram'
@@ -132,14 +134,18 @@ class TelegramNotificationsPlugin(notify.NotificationPlugin):
         return filter(bool, receivers.strip().splitlines())
 
     def send_message(self, url, payload, receiver):
+        import ujson
         payload['chat_id'] = receiver
         self.logger.debug('Sending message to %s ' % receiver)
+        payload['message'] = usjon.dumps(payload)
+
         response = safe_urlopen(
             method='POST',
             url=url,
             json=payload,
         )
         self.logger.debug('Response code: %s, content: %s' % (response.status_code, response.content))
+
 
     def notify_users(self, group, event, fail_silently=False, **kwargs):
         self.logger.debug('Received notification for event: %s' % event)
