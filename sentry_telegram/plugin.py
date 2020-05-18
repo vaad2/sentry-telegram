@@ -137,7 +137,7 @@ class TelegramNotificationsPlugin(notify.NotificationPlugin):
         import ujson
         payload['chat_id'] = receiver
         self.logger.debug('Sending message to %s ' % receiver)
-        payload['message'] = usjon.dumps(payload)
+        payload['message'] = ujson.dumps(payload)
 
         response = safe_urlopen(
             method='POST',
